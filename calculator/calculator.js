@@ -14,8 +14,31 @@ function toggleSign() {
         display.value = '-' + display.value;
     }
 }
+function toggleParentheses() {
+    const currentExpression = display.value;
+    const openParenthesisCount = (currentExpression.match(/\(/g) || []).length;
+    const closeParenthesisCount = (currentExpression.match(/\)/g) || []).length;
+
+    if (openParenthesisCount === closeParenthesisCount) {
+        display.value += '(';
+    } else {
+        display.value += ')';
+    }
+}
+function calculatePercentage() {
+    try {
+        let value = parseFloat(display.value);
+        if (!isNaN(value)) {
+            display.value = (value / 100).toString();
+        }
+    } catch (error) {
+        display.value = 'Error';
+    }
+}
+
 document.querySelectorAll('input[type="button"]').forEach(button => {
     button.addEventListener('click', () => {
+        
         let value = button.value;
         if(value==='C'){
             clearDisplay();
@@ -25,8 +48,12 @@ document.querySelectorAll('input[type="button"]').forEach(button => {
             backspace();
         }else if(value==='+/-'){
             toggleSign();
+        }else if(value==='()'){
+            toggleParentheses()
+        }else if(value==='%'){
+            calculatePercentage();
         }else {
-            update(value);
+            update(valve);
         }
        
     });
